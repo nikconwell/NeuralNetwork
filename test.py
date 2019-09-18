@@ -9,6 +9,10 @@ import numpy as np
 # We use this since we want to get the outputs of our neural network to be either 0 (False) or 1 (True)
 def sigmoid(x):
     return 1/(1+np.exp(-x))
+
+#
+# Used to calculate how much adjustment we will do.  Larger adjustments if we are near the midpoint of 0..1, very small adjustment the closer we are to
+# 0 or 1.
 def derivative(x):
     return x*(1-x)
 
@@ -22,13 +26,13 @@ def derivative(x):
 input_dataset = np.array([  [0,0,1],
                             [0,1,0],
                             [1,0,0],
-                            [1,1,0]])
+                            [1,1,1]])
     
 # Outputs we expect for the inputs.            
-output_dataset = np.array([ [0],
+output_dataset = np.array([ [1],
                             [1],
-                            [0],
-                            [1]  ])
+                            [1],
+                            [0]  ])
 
 print("Inputs:")
 print(input_dataset)
@@ -39,7 +43,7 @@ print("\n")
 
 #
 # Our 3 neuron neural network.  Seed it with some values, doesn't matter what, could be random.  These are the weights
-# that we will adjust each iteration until we get closer and closer to the output_dataset values.
+# that we will adjust each iteration until we get input_dataset * weights closer and closer to output_dataset values.
 #
 w1 = np.array([[-.9],[.0],[.9]])
 
@@ -55,12 +59,12 @@ w1 = np.array([[-.9],[.0],[.9]])
 #
 
 #
-# We will log our learning findings at each step.
+# We will log our learning findings at each step.  Write column headers of the CSV.
 #
 file_results = open("results.csv","w+")
 file_results.write("iter\tw1\tw2\tw3\tl1\tl2\tl3\tl4\n")
 
-for iter in range(1000):
+for iter in range(100):
 
     # forward propagation, multiply input matrix by weights matrix to get new value.
     input_weighted = (np.dot(input_dataset,w1))
@@ -72,7 +76,12 @@ for iter in range(1000):
 
     # Figure out how much we will change our weights by.  Too little here and it will take a ton
     # of iterations to converge.  Too much change and we lack resolution and may miss the target
-    # by too much and then will adjust back by that.
+    # by too much and then next time we could end up adjusting back by the same amount, thus just oscilating.
+    # Note that l1 is 0..1 so derivative(l1) will be 0 to .5, a nice smooth curve like an upside down bowl.  So our multiplication
+    # (used later) will be biggest if our value is around .5 (midpoint) but will be very small the closer we get to 0 or 1 meaning that
+    # we will make larger updates as we are in the middle (could be true or false, 0 or 1), but will make very small changes as we get
+    # closer to 0 or 1.
+    # Really the core of this machine learning is searching the solution space looking for better and better answers.
     l1_delta = l1_error * derivative(l1)
 
     # update weights

@@ -5,16 +5,7 @@
 
 import numpy as np
 
-# Sigmoid function.  Converts any number input to something between 0 and 1.  Has an S shape.  Large -X goes to 0, large X goes to 1.  Center is 0.5
-# We use this since we want to get the outputs of our neural network to be either 0 (False) or 1 (True)
-def sigmoid(x):
-    return 1/(1+np.exp(-x))
-
-#
-# Used to calculate how much adjustment we will do.  Larger adjustments if we are near the midpoint of 0..1, very small adjustment the closer we are to
-# 0 or 1.
-def derivative(x):
-    return x*(1-x)
+import nn as nn
 
 
 #
@@ -69,7 +60,7 @@ for iter in range(100):
     # forward propagation, multiply input matrix by weights matrix to get new value.
     input_weighted = (np.dot(input_dataset,w1))
     # Apply a sigmoid function to these weighted values to get them into the 0..1 range since our output_dataset is 0 or 1.  Basically False or True.
-    l1 = sigmoid(input_weighted)
+    l1 = nn.sigmoid(input_weighted)
 
     # Figure out how far off from the expected output we were.
     l1_error = output_dataset - l1
@@ -82,7 +73,7 @@ for iter in range(100):
     # we will make larger updates as we are in the middle (could be true or false, 0 or 1), but will make very small changes as we get
     # closer to 0 or 1.
     # Really the core of this machine learning is searching the solution space looking for better and better answers.
-    l1_delta = l1_error * derivative(l1)
+    l1_delta = l1_error * nn.derivative(l1)
 
     # update weights
     w1 += np.dot(input_dataset.T,l1_delta)

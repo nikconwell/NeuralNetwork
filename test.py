@@ -14,13 +14,13 @@ import nn as nn
 # each of the 3 test cases into the output case.
 #
 # Our inputs.  Each set of 3 inputs maps to a single output (see output_dataset)
-input_dataset = np.array([  [0,0,1],
+input_dataset = np.array([  [0,0,0],
                             [0,1,0],
                             [1,0,0],
                             [1,1,1]])
     
 # Outputs we expect for the inputs.            
-output_dataset = np.array([ [1],
+output_dataset = np.array([ [0],
                             [1],
                             [1],
                             [0]  ])
@@ -55,7 +55,7 @@ w1 = np.array([[-.9],[.0],[.9]])
 file_results = open("results.csv","w+")
 file_results.write("iter\tw1\tw2\tw3\tl1\tl2\tl3\tl4\n")
 
-for iter in range(100):
+for iter in range(100000):
 
     # forward propagation, multiply input matrix by weights matrix to get new value.
     input_weighted = (np.dot(input_dataset,w1))

@@ -4,6 +4,10 @@ import numpy as np
 
 import nn as nn
 
+from colorama import Fore, Style
+
+
+
 #
 # Try a 2 layer neural network on words.
 #
@@ -35,7 +39,6 @@ numwords = len(input_words)
 input_bits = np.zeros((numwords,32))
 output_bits = np.zeros((numwords,32))
 
-index=0
 for index in range(numwords):
     input_bits[index]=word_to_bits(input_words[index])
     output_bits[index] = word_to_bits(output_words[index])
@@ -72,14 +75,24 @@ for iter in range(1000):
     w2 += l1.T.dot(l2_delta)
     w1 += input_bits.T.dot(l1_delta)
     
+(rows,columns) = np.shape(l2)
 print("\n\nOutput learned values (actual)")
-for row in l2:
-    for column in row:
-        print("{:05.5f}  ".format(column),end='')
+for row in range(rows):
+    for column in range(columns):
+        print("{:05.5f}  ".format(l2[row][column]),end='')
     print()
 
+errors=0
 print("\nOutput learned values (rounded to T/F)")
-for row in l2:
-    for column in row:
-        print("{:.0f} ".format(column),end='')
+for row in range(rows):
+    for column in range(columns):
+        formatstring="{:.0f} "
+        if (round(l2[row][column]) == output_bits[row][column]):
+            formatstring=Fore.GREEN+formatstring+Style.RESET_ALL
+        else:
+            formatstring=Fore.RED+formatstring+Style.RESET_ALL
+            errors += 1
+        print(formatstring.format(l2[row][column]),end='')
     print()
+
+print("\n{} errors (differences between input and output)".format(errors))

@@ -6,6 +6,8 @@ import nn as nn
 
 from colorama import Fore, Style
 
+import pickle
+
 
 
 #
@@ -96,3 +98,12 @@ for row in range(rows):
     print()
 
 print("\n{} errors (differences between input and output)".format(errors))
+
+#
+# Save the network to a file.
+#
+words_network = open("network.pickle","wb+")
+pickle.dump(w1,words_network)
+pickle.dump(w2,words_network)
+words_network.close
+

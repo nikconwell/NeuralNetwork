@@ -29,6 +29,7 @@ MANIFEST
 # Ignore the generated files for now.
 *.csv
 *.xls*
+*.pickle
 
 # PyInstaller
 #  Usually these files are written by a python script from a template

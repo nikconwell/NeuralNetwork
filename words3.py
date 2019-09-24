@@ -9,9 +9,9 @@ import nn as nn
 #
 
 # What the input to the network is.
-#input_words=["test","word","here","stuf"]
+input_words=["test","word","here","stuf"]
 # What we are training to get out of it.
-#output_words=["food","outs","abcd","foob"]
+output_words=["food","outs","abcd","foob"]
 
 #
 # Convert words to an array
@@ -29,16 +29,24 @@ def word_to_bits(word):
         char_index += 1
     return(bits)
 
-input_bits = np.zeros((1,32))
-input_bits[0]=word_to_bits("test")
+# Load up our test words
+
+numwords = len(input_words)
+input_bits = np.zeros((numwords,32))
+output_bits = np.zeros((numwords,32))
+
+index=0
+for index in range(numwords):
+    input_bits[index]=word_to_bits(input_words[index])
+    output_bits[index] = word_to_bits(output_words[index])
+    index += 1
+
 print("input_bits:")
 for row in input_bits:
     for column in row:
         print("{:.0f} ".format(column),end='')
     print()
 
-output_bits = np.zeros((1,32))
-output_bits[0]=word_to_bits("food")
 print("output_bits:")
 for row in output_bits:
     for column in row:

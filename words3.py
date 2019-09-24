@@ -19,21 +19,6 @@ input_words=["test","word","here","stuf"]
 # What we are training to get out of it.
 output_words=["food","outs","abcd","foob"]
 
-#
-# Convert words to an array
-#
-
-def word_to_bits(word):
-    bits = np.zeros((len(word)*8))
-    char_index=0
-    for character in word:
-        bit_index=0
-        print (">{}< ({:08b})".format(character,ord(character)))
-        for bit in "{:08b}".format(ord(character)):
-            bits[(char_index*8)+bit_index] = bit
-            bit_index += 1
-        char_index += 1
-    return(bits)
 
 # Load up our test words
 
@@ -42,8 +27,8 @@ input_bits = np.zeros((numwords,32))
 output_bits = np.zeros((numwords,32))
 
 for index in range(numwords):
-    input_bits[index]=word_to_bits(input_words[index])
-    output_bits[index] = word_to_bits(output_words[index])
+    input_bits[index]=nn.word_to_bits(input_words[index])
+    output_bits[index] = nn.word_to_bits(output_words[index])
     index += 1
 
 print("input_bits:")
@@ -102,8 +87,8 @@ print("\n{} errors (differences between input and output)".format(errors))
 #
 # Save the network to a file.
 #
-words_network = open("network.pickle","wb+")
-pickle.dump(w1,words_network)
-pickle.dump(w2,words_network)
-words_network.close
+pickle_data=[w1,w2]
+network_pickle = open("network.pickle","wb+")
+pickle.dump(pickle_data,network_pickle)
+network_pickle.close
 

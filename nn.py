@@ -10,3 +10,20 @@ def sigmoid(x):
 # 0 or 1.
 def derivative(x):
     return x*(1-x)
+
+
+#
+# Convert text words to an array
+#
+
+def word_to_bits(word):
+    bits = np.zeros((len(word)*8))
+    char_index=0
+    for character in word:
+        bit_index=0
+        print (">{}< ({:08b})".format(character,ord(character)))
+        for bit in "{:08b}".format(ord(character)):
+            bits[(char_index*8)+bit_index] = bit
+            bit_index += 1
+        char_index += 1
+    return(bits)

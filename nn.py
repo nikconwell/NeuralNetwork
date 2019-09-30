@@ -16,8 +16,11 @@ def derivative(x):
 # Convert text words to an array
 #
 
+# Largest string we can handle
+__MAXSTRING__=40
+
 def word_to_bits(word):
-    bits = np.zeros((len(word)*8))
+    bits = np.zeros(__MAXSTRING__*8)
     char_index=0
     for character in word:
         bit_index=0

@@ -8,23 +8,53 @@ from colorama import Fore, Style
 
 import pickle
 
-
+import sys
+import fileinput
+import re
 
 #
 # Try a 2 layer neural network on words.
 #
 
 # What the input to the network is.
-input_words=["test","word","here","stuf"]
+input_words = []
+output_words = []
+
+# Remind person if they are not feeding in the file
+if sys.stdin.isatty():
+    print("Expecting lines of input word and output word on stdin.  ^D at end...")
+
+inword = True
+for line in fileinput.input():
+    line = line.rstrip()
+    # Skip blanks and comments
+    if (re.match("^\s*$",line.rstrip()) or
+        re.match("^\s*#",line.rstrip())):
+        next
+    if len(line) > nn.__MAXSTRING__:
+        print("ERROR - input line too long, max length of {} characters".format(maxstring))
+        sys.exit()
+
+    # Flip back and forth adding the word to input_words and output_words
+    if (inword == True):
+        input_words.append(line)
+        inword = False
+    else:
+        output_words.append(line)
+        inword = True
+
+
+
+#input_words=["test","word","here","stuf"]
 # What we are training to get out of it.
-output_words=["food","outs","abcd","foob"]
+#output_words=["food","outs","abcd","foob"]
 
 
 # Load up our test words
 
 numwords = len(input_words)
-input_bits = np.zeros((numwords,32))
-output_bits = np.zeros((numwords,32))
+input_bits = np.zeros((numwords,nn.__MAXSTRING__*8))
+output_bits = np.zeros((numwords,nn.__MAXSTRING__*8))
 
 for index in range(numwords):
     input_bits[index]=nn.word_to_bits(input_words[index])
@@ -44,10 +74,10 @@ for row in output_bits:
     print()
 
 
-# Network of weights.  32 to match the input, 32 to match the output.  16 bits of middle layer.
+# Network of weights.  Sized to match input, in bits.  Middle layer 16 bits deep.
 np.random.seed(1)
-w1 = 2*np.random.random((32,16))-1
-w2 = 2*np.random.random((16,32))-1
+w1 = 2*np.random.random((nn.__MAXSTRING__*8,16))-1
+w2 = 2*np.random.random((16,nn.__MAXSTRING__*8))-1
 
 for iter in range(1000):
     l1 = nn.sigmoid(np.dot(input_bits,w1))

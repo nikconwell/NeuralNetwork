@@ -18,10 +18,11 @@ network_pickle.close
 [w1,w2] = pickle_data
 
 # What the input to the network is.
-input_words=["test","word","here","stuf"]
+#input_words=["test","word","here","stuf"]
+input_words=["test"]
 
 numwords = len(input_words)
-input_bits = np.zeros((numwords,32))
+input_bits = np.zeros((numwords,nn.__MAXSTRING__*8))
 
 for index in range(numwords):
     input_bits[index]=nn.word_to_bits(input_words[index])
@@ -34,13 +35,13 @@ l1 = nn.sigmoid(np.dot(input_bits,w1))
 l2 = nn.sigmoid(np.dot(l1,w2))
 
 (rows,columns) = np.shape(l2)
-print("\nOutput learned values (rounded to T/F)")
-for row in range(rows):
-    for column in range(columns):
-        formatstring="{:.0f} "
-        print(formatstring.format(l2[row][column]),end='')
-    print()
-print("\nString format:")
+#print("\nOutput learned values (rounded to T/F)")
+#for row in range(rows):
+#    for column in range(columns):
+#        formatstring="{:.0f} "
+#        print(formatstring.format(l2[row][column]),end='')
+#    print()
+#print("\nString format:")
 
 #
 # Convert binary back to characters
@@ -55,7 +56,7 @@ for row in range(rows):
         index += 1
         if (index == 8):
             string += "{:c}".format(character)
-            print(">{}< ({:c})".format(character,character))
+            #print(">{}< ({:c})".format(character,character))
             character=0
             index=0
 print("output: ",string)

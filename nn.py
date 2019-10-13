@@ -24,7 +24,7 @@ def word_to_bits(word):
     char_index=0
     for character in word:
         bit_index=0
-        print (">{}< ({:08b})".format(character,ord(character)))
+        # print (">{}< ({:08b})".format(character,ord(character)))
         for bit in "{:08b}".format(ord(character)):
             bits[(char_index*8)+bit_index] = bit
             bit_index += 1

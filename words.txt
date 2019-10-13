@@ -1,11 +1,26 @@
-test
-food
+Alabama
+Montgomery
 
-word
-outs
+Alaska
+Juneau
 
-here
-abcd
+Arizona
+Phoenix
 
-stuff
-foob
+Arkansas
+Little Rock
+
+California
+Sacramento
+
+Colorado
+Denver
+
+Connecticut
+Hartford
+
+Delaware
+Dover
+
+Florida
+Tallahassee

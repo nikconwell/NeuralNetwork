@@ -4,7 +4,8 @@ import numpy as np
 
 import nn as nn
 
-from colorama import Fore, Style
+from colorama import Fore, Style, init
+init()
 
 import pickle
 
@@ -28,9 +29,9 @@ inword = True
 for line in fileinput.input():
     line = line.rstrip()
     # Skip blanks and comments
-    if (re.match("^\s*$",line.rstrip()) or
-        re.match("^\s*#",line.rstrip())):
-        next
+    if (re.match("^\s*$",line) or
+        re.match("^\s*#",line)):
+        continue
     if len(line) > nn.__MAXSTRING__:
         print("ERROR - input line too long, max length of {} characters".format(maxstring))
         sys.exit()
@@ -61,25 +62,29 @@ for index in range(numwords):
     output_bits[index] = nn.word_to_bits(output_words[index])
     index += 1
 
-print("input_bits:")
-for row in input_bits:
-    for column in row:
-        print("{:.0f} ".format(column),end='')
-    print()
+#print("input_bits:")
+#for row in input_bits:
+#    for column in row:
+#        print("{:.0f} ".format(column),end='')
+#    print()
 
-print("output_bits:")
-for row in output_bits:
-    for column in row:
-        print("{:.0f} ".format(column),end='')
-    print()
+#print("output_bits:")
+#for row in output_bits:
+#    for column in row:
+#        print("{:.0f} ".format(column),end='')
+#    print()
 
 
-# Network of weights.  Sized to match input, in bits.  Middle layer 16 bits deep.
+# Network of weights.  Sized to match input, in bits.  Middle layer 64 bits deep.
 np.random.seed(1)
-w1 = 2*np.random.random((nn.__MAXSTRING__*8,16))-1
-w2 = 2*np.random.random((16,nn.__MAXSTRING__*8))-1
+middle_size=64
+w1 = 2*np.random.random((nn.__MAXSTRING__*8,middle_size))-1
+w2 = 2*np.random.random((middle_size,nn.__MAXSTRING__*8))-1
 
-for iter in range(1000):
+# The bigger that middle_size gets, you will need to increase the iterations so that the
+# network can stabilize.  There's probably some math with this, but I've just been experimenting randomly.
+# I'm guessing these will have a nice chart if you can figure out optimal values.
+for iter in range(100000):
     l1 = nn.sigmoid(np.dot(input_bits,w1))
     l2 = nn.sigmoid(np.dot(l1,w2))
 
@@ -93,11 +98,11 @@ for iter in range(1000):
     w1 += input_bits.T.dot(l1_delta)
     
 (rows,columns) = np.shape(l2)
-print("\n\nOutput learned values (actual)")
-for row in range(rows):
-    for column in range(columns):
-        print("{:05.5f}  ".format(l2[row][column]),end='')
-    print()
+#print("\n\nOutput learned values (actual)")
+#for row in range(rows):
+#    for column in range(columns):
+#        print("{:05.5f}  ".format(l2[row][column]),end='')
+#    print()
 
 errors=0
 print("\nOutput learned values (rounded to T/F)")

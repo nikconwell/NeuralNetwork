@@ -7,14 +7,14 @@ Adjust the size and iteration in words3.py:
 ```Python
 # Network of weights.  Sized to match input, in bits.  Middle layer 64 bits deep.
 np.random.seed(1)
-middle_size=96
+middle_size=64
 w1 = 2*np.random.random((nn.__MAXSTRING__*8,middle_size))-1
 w2 = 2*np.random.random((middle_size,nn.__MAXSTRING__*8))-1
 
 # The bigger that middle_size gets, you will need to increase the iterations so that the
 # network can stabilize.  There's probably some math with this, but I've just been experimenting randomly.
 # I'm guessing these will have a nice chart if you can figure out optimal values.
-for iter in range(10000000):
+for iter in range(100000):
 ```
 You will find that as you increase the middle_size that you will need to greatly increase the range() so that the network will stabilize.
 

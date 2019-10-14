@@ -84,3 +84,22 @@ Connecticut
 output:  Hartford
 ^Z
 ```
+
+If the network gets saturated, say if you run in a few more states on the basic network size:
+
+```powershell
+gc -head 26 states.txt | python words3.py
+```
+```text
+2 errors (differences between input and output)
+```
+You will see slight errors on the output:
+```powershell
+python answer.py
+```
+```text
+Connecticut
+output:  Hartfopd
+```
+Notice the r was mis-learned or mis-remembered as a p.  Off by a bit.
+
